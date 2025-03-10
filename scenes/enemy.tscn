@@ -1,5 +1,6 @@
-[gd_scene load_steps=9 format=3 uid="uid://ow4p3h4cbsii"]
+[gd_scene load_steps=10 format=3 uid="uid://ow4p3h4cbsii"]
 
+[ext_resource type="Script" uid="uid://ldy0rhwbpf70" path="res://scripts/enemy.gd" id="1_4ra3w"]
 [ext_resource type="Texture2D" uid="uid://b821t0k076q6r" path="res://assets/sprites/128x Reverse Invaders.png" id="1_md0e3"]
 [ext_resource type="PackedScene" uid="uid://cq2ne6mwu7gk4" path="res://scenes/kill_zone.tscn" id="2_4ra3w"]
 
@@ -52,7 +53,9 @@ animations = [{
 [sub_resource type="CircleShape2D" id="CircleShape2D_ipns3"]
 radius = 6.0208
 
-[node name="Enemy" type="Node2D"]
+[node name="Enemy" type="Node2D" node_paths=PackedStringArray("fire_pos")]
+script = ExtResource("1_4ra3w")
+fire_pos = NodePath("bullet_spawn")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 position = Vector2(0, -8)
@@ -66,3 +69,13 @@ frame_progress = 0.0793869
 [node name="CollisionShape2D" type="CollisionShape2D" parent="KillZone"]
 position = Vector2(0, -8)
 shape = SubResource("CircleShape2D_ipns3")
+
+[node name="bullet_spawn" type="Node2D" parent="."]
+
+[node name="Timer" type="Timer" parent="."]
+autostart = true
+
+[node name="Marker2D" type="Marker2D" parent="."]
+position = Vector2(49, 0)
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
